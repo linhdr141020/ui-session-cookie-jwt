@@ -36,8 +36,8 @@ function App() {
         if (res.ok) return res.json()
         throw res
       })
-      .then((user) => {
-        console.log(user);
+      .then(({ token }) => {
+        localStorage.setItem('token', token)
       })
       .catch((error) => {
         console.log(error.status);
@@ -51,7 +51,10 @@ function App() {
 
   useEffect(() => {
     fetch(`${baseApi}/auth/me`, {
-      credentials: "include"
+      credentials: "include",
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`
+      }
     })
       .then((res) => {
         if (res.ok) return res.json()
